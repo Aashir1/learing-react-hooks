@@ -1,26 +1,54 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
 
-function App() {
+const Todo = ({ text, index }) => {
+  return <div key={index}>{text}</div>;
+};
+const TodoForm = ({ addTodo }) => {
+  const [todoText, setTodoText] = useState("");
+  const onSubmit = e => {
+    e.preventDefault();
+    addTodo(todoText);
+    setTodoText("")
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <form onSubmit={onSubmit}>
+      <input
+        placeholder="Enter Todo"
+        value={todoText}
+        onChange={e => setTodoText(e.target.value)}
+      />
+    </form>
+  );
+};
+const App = () => {
+  const [getTodo, setTodo] = useState([
+    {
+      text: "lorem impulse"
+    },
+    {
+      text: "lorem impulse"
+    },
+    {
+      text: "lorem impulse"
+    }
+  ]);
+  const addTodo = text => {
+    setTodo([
+      ...getTodo,
+      {
+        text
+      }
+    ]);
+  };
+  return (
+    <div>
+      <h1>Todo List</h1>
+      {getTodo.map((todo, i) => {
+        return <Todo text={todo.text} index={i} />;
+      })}
+      <TodoForm addTodo={addTodo} />
     </div>
   );
-}
+};
 
 export default App;
